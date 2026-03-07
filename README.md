@@ -65,20 +65,6 @@ User interface improvements and integration testing
 Sprint 5
 Bug fixes, testing, and final documentation
 
-Installation Instructions
-
-Clone the repository
-Activate the virtual environment
-Install the required packages
-Run database migrations
-Start the development server
-
-Commands
-
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
-
 Future Improvements
 
 In the future we could add features like notifications, calendar syncing, or deploying the application online so students can actually use it.
