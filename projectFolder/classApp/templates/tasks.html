@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>My Tasks</h1>
+<a href="{% url 'task_create' %}">Add New Task</a>
+{% for task in tasks %}
+<div>
+    <h3>{{ task.title }}</h3>
+    <p>{{ task.description }}</p>
+    <p>Due: {{ task.due_date }}</p>
+    <p>Done: {{ task.completed }}</p>
+    <a href="{% url 'task_edit' task.id %}">Edit</a>
+    <a href="{% url 'task_delete' task.id %}">Delete</a>
+</div>
+{% empty %}
+<p>No tasks yet</p>
+{% endfor %}
+{% endblock %}
