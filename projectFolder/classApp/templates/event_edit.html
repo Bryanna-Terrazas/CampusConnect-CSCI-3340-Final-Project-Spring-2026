@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Edit Event</h1>
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="title" value="{{ event.title }}" required><br>
+    <textarea name="description">{{ event.description }}</textarea><br>
+    <input type="text" name="location" value="{{ event.location }}"><br>
+    <input type="date" name="date" value="{{ event.date }}"><br>
+    <select name="category">
+        <option value="academic" {% if event.category == 'academic' %}selected{% endif %}>Academic</option>
+        <option value="sports" {% if event.category == 'sports' %}selected{% endif %}>Sports</option>
+        <option value="civil" {% if event.category == 'civil' %}selected{% endif %}>Civil</option>
+        <option value="clubs" {% if event.category == 'clubs' %}selected{% endif %}>Clubs</option>
+    </select><br>
+    <button type="submit">Update Event</button>
+</form>
+<a href="{% url 'event_list' %}">Back</a>
+{% endblock %}

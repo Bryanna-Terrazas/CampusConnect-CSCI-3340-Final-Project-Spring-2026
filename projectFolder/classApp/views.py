@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from .forms import UserUpdateForm, ProfileUpdateForm
-from .models import Task
+from .models import Task, Event
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
@@ -104,3 +104,55 @@ def task_delete(request, task_id):
         messages.success(request, 'Task deleted!')
         return redirect('task_list')
     return render(request, 'task_confirm_delete.html', {'task': task})
+
+
+@login_required
+def event_list(request):
+    events = Event.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'events.html', {'events': events})
+
+
+@login_required
+def event_create(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        location = request.POST.get('location')
+        date = request.POST.get('date')
+        category = request.POST.get('category')
+        Event.objects.create(
+            user=request.user,
+            title=title,
+            description=description,
+            location=location,
+            date=date or None,
+            category=category
+        )
+        messages.success(request, 'Event created!')
+        return redirect('event_list')
+    return render(request, 'event_create.html')
+
+
+@login_required
+def event_edit(request, event_id):
+    event = get_object_or_404(Event, id=event_id, user=request.user)
+    if request.method == 'POST':
+        event.title = request.POST.get('title')
+        event.description = request.POST.get('description')
+        event.location = request.POST.get('location')
+        event.date = request.POST.get('date') or None
+        event.category = request.POST.get('category')
+        event.save()
+        messages.success(request, 'Event updated!')
+        return redirect('event_list')
+    return render(request, 'event_edit.html', {'event': event})
+
+
+@login_required
+def event_delete(request, event_id):
+    event = get_object_or_404(Event, id=event_id, user=request.user)
+    if request.method == 'POST':
+        event.delete()
+        messages.success(request, 'Event deleted!')
+        return redirect('event_list')
+    return render(request, 'event_confirm_delete.html', {'event': event})

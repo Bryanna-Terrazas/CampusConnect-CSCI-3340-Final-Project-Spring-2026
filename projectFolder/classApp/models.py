@@ -22,3 +22,23 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Event(models.Model):
+    CATEGORY_CHOICES = [
+        ('academic', 'Academic'),
+        ('sports', 'Sports'),
+        ('civil', 'Civil'),
+        ('clubs', 'Clubs'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='events')
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    location = models.CharField(max_length=200, blank=True)
+    date = models.DateField(null=True, blank=True)
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='academic')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
